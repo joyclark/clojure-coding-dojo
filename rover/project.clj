@@ -6,4 +6,6 @@
   :dependencies [[org.clojure/clojure "1.9.0-alpha16"]
                  [myguidingstar/clansi "1.3.0"]]
   :main rover.console
-  :plugins [[com.jakemccrary/lein-test-refresh "0.19.0"]])
+  :plugins [[com.jakemccrary/lein-test-refresh "0.19.0"]]
+  :profiles
+  {:uberjar {:aot :all}})

@@ -1,4 +1,5 @@
 (ns rover.console
+  (:gen-class)
   (:require [rover.core :as rover]
             [clansi.core :refer [style]]))
 
