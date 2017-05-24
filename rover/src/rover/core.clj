@@ -27,12 +27,11 @@
                       :west  [0 -1]
                       :east  [0 1]})
 
-;; TODO: move on the world
 (defn new-pos [world [x y] direction]
   (let [max-x (count world)
         max-y (count (first world))
         [diffx diffy] (get forward-mapping direction)]
-    [(+ x diffx) (+ y diffy)]))
+    [(mod (+ x diffx) max-x) (mod (+ y diffy) max-y)]))
 
 (def game {:world [[:_ :X :_ :_ :_ :X]
                    [:X :_ :_ :_ :_ :X]

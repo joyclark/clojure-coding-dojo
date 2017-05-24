@@ -54,3 +54,10 @@
       (is (= (:position left-forward) [3 2]))
       (is (= (:position l-f-r-f) [2 2]))
       (is (= (:position l-f-r-f-f-r-f) [1 3])))))
+
+
+
+(deftest test-new-pos
+  (testing "test-create-new-pos"
+    (let [world (:world game)]
+      (is (= (rover/new-pos world [4 4] :south) [5 4])))))
