@@ -2,26 +2,16 @@
   (:require [clojure.test :refer :all]
             [rover.core :as rover]))
 
-(def game {:world [[:_ :X :_ :_ :_ :X] 
-                   [:X :_ :_ :_ :_ :X] 
-                   [:_ :_ :_ :X :_ :X] 
-                   [:_ :_ :_ :_ :_ :_] 
-                   [:_ :_ :X :X :_ :X] 
-                   [:_ :_ :_ :_ :_ :_]], 
-           :direction :north, 
+(def world [[:_ :X :_ :_ :_ :X]
+            [:X :_ :_ :_ :_ :X]
+            [:_ :_ :_ :X :_ :X]
+            [:_ :_ :_ :_ :_ :_]
+            [:_ :_ :X :X :_ :X]
+            [:_ :_ :_ :_ :_ :_]])
+
+(def game {:world world,
+           :direction :north,
            :position [3 3]})
-
-(deftest a-test
-  (testing "FIXME, I fail."
-    (is (= 1 1))))
-
-(deftest test-can-move?
-  (testing "Can I move?"
-    (is (not (rover/can-move? game)))))
-
-(deftest test-i-can-move
-  (testing "I can move!"
-    (is (rover/can-move? (rover/execute game "l")))))
 
 (deftest test-turn-right
   (testing "test turn right"
@@ -55,9 +45,38 @@
       (is (= (:position l-f-r-f) [2 2]))
       (is (= (:position l-f-r-f-f-r-f) [1 3])))))
 
-
+(deftest test-move-backward
+  (testing "what happens when I move backward?"
+    (let [test-game {:world world :direction :north :position [2 2]}
+          moved-back (rover/execute test-game "b")]
+      (is (= (:position moved-back) [3 2])))))
 
 (deftest test-new-pos
-  (testing "test-create-new-pos"
-    (let [world (:world game)]
-      (is (= (rover/new-pos world [4 4] :south) [5 4])))))
+  (testing "test-new-position"
+    (let [test-game {:world world :direction :south :position [4 4]}
+          forward (rover/execute test-game "f")]
+      (is (= (:position forward) [5 4])))))
+
+(deftest test-move-over-northern-border
+  (testing "What happens when you move too far north?"
+    (let [test-game {:world world :direction :north :position [0 2]}
+          after-move (rover/execute test-game "f")]
+      (is (= (:position after-move) [5 2])))))
+
+(deftest test-move-over-western-border
+  (testing "What happens when you move too far west?"
+    (let [test-game {:world world :direction :west :position [3 0]}
+          after-move (rover/execute test-game "f")]
+      (is (= (:position after-move) [3 5])))))
+
+(deftest test-move-over-eastern-border
+  (testing "What happens when you move too far east?"
+    (let [test-game {:world world :direction :east :position [3 5]}
+          after-move (rover/execute test-game "f")]
+      (is (= (:position after-move) [3 0])))))
+
+(deftest test-move-over-southern-border
+  (testing "What happens when you move too far south?"
+    (let [test-game {:world world :direction :south :position [5 4]}
+          after-move (rover/execute test-game "f")]
+      (is (= (:position after-move) [0 4])))))
