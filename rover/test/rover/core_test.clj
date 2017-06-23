@@ -35,6 +35,30 @@
       (is (= (:direction four-turns) :north)))))
 
 (deftest test-move-forward
+  (testing "what happens when I move forward?"
+    (let [test-game {:world world :direction :north :position [2 2]}
+          moved-back (rover/execute test-game "f")]
+      (is (= (:position moved-back) [1 2])))))
+
+(deftest test-move-forward-cant
+  (testing "what happens when I can't move forward?"
+    (let [test-game {:world world :direction :north :position [3 3]}
+          moved-back (rover/execute test-game "f")]
+      (is (= (:position moved-back) [3 3])))))
+
+(deftest test-move-backward
+  (testing "what happens when I move backward?"
+    (let [test-game {:world world :direction :north :position [2 2]}
+          moved-back (rover/execute test-game "b")]
+      (is (= (:position moved-back) [3 2])))))
+
+(deftest test-move-backward-cant
+  (testing "what happens when I can't move forward?"
+    (let [test-game {:world world :direction :north :position [3 3]}
+          moved-back (rover/execute test-game "b")]
+      (is (= (:position moved-back) [3 3])))))
+
+(deftest test-move
   (testing "test moving forward"
     (let [no-move (rover/execute game "f")
           left-forward (rover/execute game "lf")
@@ -44,12 +68,6 @@
       (is (= (:position left-forward) [3 2]))
       (is (= (:position l-f-r-f) [2 2]))
       (is (= (:position l-f-r-f-f-r-f) [1 3])))))
-
-(deftest test-move-backward
-  (testing "what happens when I move backward?"
-    (let [test-game {:world world :direction :north :position [2 2]}
-          moved-back (rover/execute test-game "b")]
-      (is (= (:position moved-back) [3 2])))))
 
 (deftest test-new-pos
   (testing "test-new-position"
